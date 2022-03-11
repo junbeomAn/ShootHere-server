@@ -7,6 +7,11 @@ import { Coords } from './entities/map.entity';
 @Injectable()
 export class MapService {
   private naverApiDomain = 'https://naveropenapi.apigw.ntruss.com';
+  private apiKeys = {
+    'X-NCP-APIGW-API-KEY-ID': process.env.API_KEY_ID,
+    'X-NCP-APIGW-API-KEY': process.env.API_KEY,
+  };
+
   constructor(private httpService: HttpService) {}
 
   async getCoords(address: string): Promise<Coords> {
@@ -14,8 +19,7 @@ export class MapService {
     const res = await lastValueFrom(
       this.httpService.get(`${geocodeUrl}?query=${encodeURI(address)}`, {
         headers: {
-          'X-NCP-APIGW-API-KEY-ID': 'kznn87rxc3',
-          'X-NCP-APIGW-API-KEY': 'RLdS4OGei2VMDTxwiaTlsRJklqOtVq1obmn1m3Ty',
+          ...this.apiKeys,
         },
       }),
     );
@@ -33,8 +37,7 @@ export class MapService {
         `${directionUrl}?start=${startY},${startX}&goal=${goalY},${goalX}`,
         {
           headers: {
-            'X-NCP-APIGW-API-KEY-ID': 'kznn87rxc3',
-            'X-NCP-APIGW-API-KEY': 'RLdS4OGei2VMDTxwiaTlsRJklqOtVq1obmn1m3Ty',
+            ...this.apiKeys,
           },
         },
       ),

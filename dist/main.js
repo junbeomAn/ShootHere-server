@@ -11,9 +11,13 @@ async function bootstrap() {
         transform: true,
     }));
     app.enableCors({
-        origin: ['http://localhost:8080'],
+        origin: [
+            process.env.NODE_ENV === 'development'
+                ? process.env.DEV_ORIGIN
+                : process.env.PROD_ORIGIN,
+        ],
     });
-    await app.listen(3000);
+    await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map

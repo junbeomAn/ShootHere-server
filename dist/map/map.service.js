@@ -17,14 +17,15 @@ let MapService = class MapService {
     constructor(httpService) {
         this.httpService = httpService;
         this.naverApiDomain = 'https://naveropenapi.apigw.ntruss.com';
+        this.apiKeys = {
+            'X-NCP-APIGW-API-KEY-ID': process.env.API_KEY_ID,
+            'X-NCP-APIGW-API-KEY': process.env.API_KEY,
+        };
     }
     async getCoords(address) {
         const geocodeUrl = `${this.naverApiDomain}/map-geocode/v2/geocode`;
         const res = await (0, rxjs_1.lastValueFrom)(this.httpService.get(`${geocodeUrl}?query=${encodeURI(address)}`, {
-            headers: {
-                'X-NCP-APIGW-API-KEY-ID': 'kznn87rxc3',
-                'X-NCP-APIGW-API-KEY': 'RLdS4OGei2VMDTxwiaTlsRJklqOtVq1obmn1m3Ty',
-            },
+            headers: Object.assign({}, this.apiKeys),
         }));
         const target = res.data.addresses[0];
         return { x: target.x, y: target.y };
@@ -34,10 +35,7 @@ let MapService = class MapService {
         const [startY, startX] = startPos.split(',');
         const [goalY, goalX] = goalPos.split(',');
         const res = await (0, rxjs_1.lastValueFrom)(this.httpService.get(`${directionUrl}?start=${startY},${startX}&goal=${goalY},${goalX}`, {
-            headers: {
-                'X-NCP-APIGW-API-KEY-ID': 'kznn87rxc3',
-                'X-NCP-APIGW-API-KEY': 'RLdS4OGei2VMDTxwiaTlsRJklqOtVq1obmn1m3Ty',
-            },
+            headers: Object.assign({}, this.apiKeys),
         }));
         const result = res.data.route.traoptimal[0];
         const path = result.path;
