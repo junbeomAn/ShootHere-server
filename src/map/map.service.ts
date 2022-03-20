@@ -24,7 +24,7 @@ export class MapService {
       }),
     );
     const target = res.data.addresses[0];
-    return { x: target.x, y: target.y };
+    return { x: Number(target.x), y: Number(target.y) };
   }
 
   async getPath(startPos: string, goalPos: string): Promise<number[]> {
@@ -45,5 +45,26 @@ export class MapService {
     const result = res.data.route.traoptimal[0];
     const path: number[] = result.path;
     return path;
+  }
+
+  async getAddress(lat: string, lng: string): Promise<string> {
+    const geocodeUrl = `${this.naverApiDomain}/map-reversegeocode/v2/gc?coords=${lng},${lat}&output=json`;
+
+    const res = await lastValueFrom(
+      this.httpService.get(geocodeUrl, {
+        headers: {
+          ...this.apiKeys,
+        },
+      }),
+    );
+
+    const { area1, area2 } = res.data.results[0].region;
+
+    if ((area1.name as string).endsWith('도')) {
+      const [city] = area2.name.split(' ');
+      return city;
+    } else {
+      return area1.alias;
+    }
   }
 }

@@ -25,6 +25,9 @@ let MapController = class MapController {
     getPath(start, goal) {
         return this.mapService.getPath(start, goal);
     }
+    getAddress(lat, lng) {
+        return this.mapService.getAddress(lat, lng);
+    }
 };
 __decorate([
     (0, common_1.Get)('coords'),
@@ -41,6 +44,14 @@ __decorate([
     __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", void 0)
 ], MapController.prototype, "getPath", null);
+__decorate([
+    (0, common_1.Get)('address'),
+    __param(0, (0, common_1.Query)('lat')),
+    __param(1, (0, common_1.Query)('lng')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", void 0)
+], MapController.prototype, "getAddress", null);
 MapController = __decorate([
     (0, common_1.Controller)('/api/map'),
     __metadata("design:paramtypes", [map_service_1.MapService])

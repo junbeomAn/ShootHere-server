@@ -7,4 +7,5 @@ export declare class MapService {
     constructor(httpService: HttpService);
     getCoords(address: string): Promise<Coords>;
     getPath(startPos: string, goalPos: string): Promise<number[]>;
+    getAddress(lat: string, lng: string): Promise<string>;
 }

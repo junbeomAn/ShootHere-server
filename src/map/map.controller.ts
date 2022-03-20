@@ -13,4 +13,8 @@ export class MapController {
   getPath(@Query('start') start: string, @Query('goal') goal: string) {
     return this.mapService.getPath(start, goal);
   }
+  @Get('address')
+  getAddress(@Query('lat') lat: string, @Query('lng') lng: string) {
+    return this.mapService.getAddress(lat, lng);
+  }
 }
